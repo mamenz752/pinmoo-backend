@@ -1,0 +1,31 @@
+services:
+  app:
+    build: .
+    ports:
+      - "8080:80"
+    env_file:
+      - .env
+    environment:
+      DB_HOST: db
+      DB_PORT: 5432
+      DB_DATABASE: pinmoo_dev
+      DB_USERNAME: pinmoo_user
+      DB_PASSWORD: pinmoo_pass
+    depends_on:
+      - db
+    volumes:
+      - .:/var/www/html
+
+  db:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_DB: pinmoo_dev
+      POSTGRES_USER: pinmoo_user
+      POSTGRES_PASSWORD: pinmoo_pass
+    ports:
+      - "5432:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+
+volumes:
+  pgdata:
